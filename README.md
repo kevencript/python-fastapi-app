@@ -1,2 +1,7 @@
-# embed-backend-devops
-Technical assessment for embed.xyz
+# fastapi-mongodb
+
+### Project Description
+
+### How to Setup
+
+### About logging

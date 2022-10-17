@@ -1,5 +1,6 @@
 import logging
 from functools import lru_cache
+import logstash
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from rich.console import Console
@@ -18,10 +19,18 @@ def get_logger(module_name):
     Returns:
 
     """ 
+    host = 'logstash'
+    port = 50000
+
     logger = logging.getLogger(module_name)
     logging.basicConfig(filename='general.log', encoding='utf-8', level=logging.DEBUG)
+    
+    # Create a handler for it
     handler = RichHandler(rich_tracebacks=True, console=console, tracebacks_show_locals=True)
     handler.setFormatter(logging.Formatter("%(name)s - [ %(threadName)s:%(funcName)s:%(lineno)d ] - %(message)s"))
+
+    # Add the handler to the logger
+    logger.addHandler(logstash.LogstashHandler(host, port, version=1))
     logger.addHandler(handler)
 
     return logger
