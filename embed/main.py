@@ -26,7 +26,7 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    app.state.logger.info("Parking tractors in garage...")
+    app.state.logger.info("Stopping Embed web service...")
 
 
 @app.get("/health-check")

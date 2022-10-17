@@ -20,6 +20,7 @@ rich = "*"
 safety = "*"
 pyupgrade = "*"
 
+
 [dev-packages]
 
 [requires]
