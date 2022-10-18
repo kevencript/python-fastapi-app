@@ -27,7 +27,7 @@ async def mail_exists(email: str, collection: str) -> dict:
     """
     document_filter = {"email": email}
     if document := await embed.app.state.mongo_collection[collection].find_one(document_filter):
-        return await document
+        return document
     else:
         return False
 

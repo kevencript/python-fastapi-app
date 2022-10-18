@@ -51,7 +51,7 @@ async def create_user(payload: CreateUserSchema):
 
         # Inserting user into the DB
         createdUser = await create_user_db(userDict, collection)
-        userToReturn = userResponseEntity(createdUser)
+        userToReturn = userResponseEntity(createdUser) # Serialized pattern for return
 
         return {"status": "success", "user": userToReturn}
     except ValueError as exception:
