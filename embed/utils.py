@@ -1,13 +1,15 @@
-import logging
+from passlib.context import CryptContext
 from functools import lru_cache
-import logstash
 
 from motor.motor_asyncio import AsyncIOMotorClient
 from rich.console import Console
 from rich.logging import RichHandler
 
-console = Console(color_system="256", width=150, style="blue")
+import logging
+import logstash
 
+console = Console(color_system="256", width=150, style="blue")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @lru_cache
 def get_logger(module_name):
@@ -54,3 +56,9 @@ async def init_mongo(db_name: str, db_url: str, collection: str):
     }
     # return {0: mongo_client, 1: mongo_database, 2: mongo_collections}
     return mongo_client, mongo_database, mongo_collections
+
+def hash_password(password: str):
+    return pwd_context.hash(password)
+
+def verify_password(password: str, hashed_password: str):
+    return pwd_context.verify(password, hashed_password)
