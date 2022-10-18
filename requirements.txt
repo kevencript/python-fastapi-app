@@ -72,4 +72,5 @@ watchfiles==0.16.1
 websockets==10.3
 python-logstash
 passlib[bcrypt]
+fastapi-jwt-auth[asymmetric]
 
