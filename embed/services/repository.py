@@ -1,14 +1,9 @@
+from datetime import date
 from bson import ObjectId
 from pymongo.errors import WriteError
 
 import embed.main as embed
-from embed.routers.exceptions import AlreadyExistsHTTPException
-
-
-async def document_id_helper(document: dict) -> dict:
-    document["id"] = document.pop("_id")
-    return document
-
+from embed.routers.exceptions import AlreadyExistsHTTPException, BadRequestHTTPException
 
 async def retrieve_document(document_id: str, collection: str) -> dict:
     """
@@ -19,9 +14,35 @@ async def retrieve_document(document_id: str, collection: str) -> dict:
     """
     document_filter = {"_id": ObjectId(document_id)}
     if document := await embed.app.state.mongo_collection[collection].find_one(document_filter):
-        return await document_id_helper(document)
+        return document
     else:
         raise ValueError(f"No document found for {document_id=} in {collection=}")
+
+async def mail_exists(email: str, collection: str) -> dict:
+    """
+
+    :param email:
+    :param collection:
+    :return:
+    """
+    document_filter = {"email": email}
+    if document := await embed.app.state.mongo_collection[collection].find_one(document_filter):
+        return await document
+    else:
+        return False
+
+async def create_user_db(document: dict, collection: str) -> dict:
+    """
+
+    :param document:
+    :param collection:
+    :return:
+    """
+    try:
+        document = await embed.app.state.mongo_collection[collection].insert_one(document)
+        return await retrieve_document(document.inserted_id, collection)
+    except WriteError:
+        raise BadRequestHTTPException("Error while creating the user")
 
 
 async def create_document(document: dict, collection: str) -> dict:

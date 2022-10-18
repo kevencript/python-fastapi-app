@@ -1,7 +1,6 @@
 def userEntity(user) -> dict:
     return {
         "id": str(user["_id"]),
-        "name": user["name"],
         "email": user["email"],
         "verified": user["verified"],
         "password": user["password"],
@@ -13,7 +12,6 @@ def userEntity(user) -> dict:
 def userResponseEntity(user) -> dict:
     return {
         "id": str(user["_id"]),
-        "name": user["name"],
         "email": user["email"],
         "created_at": user["created_at"],
 
@@ -23,7 +21,6 @@ def userResponseEntity(user) -> dict:
 def embeddedUserResponse(user) -> dict:
     return {
         "id": str(user["_id"]),
-        "name": user["name"],
         "email": user["email"],
     }
 

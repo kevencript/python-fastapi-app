@@ -1,14 +1,10 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, constr
+from pydantic import BaseModel, constr
 
 
 class UserBaseSchema(BaseModel):
-    name: str
     email: str
-    photo: str
-    role: str | None = None
     created_at: datetime | None = None
-    updated_at: datetime | None = None
 
     class Config:
         orm_mode = True
@@ -21,7 +17,7 @@ class CreateUserSchema(UserBaseSchema):
 
 
 class LoginUserSchema(BaseModel):
-    email: EmailStr
+    email: str
     password: constr(min_length=8)
 
 
