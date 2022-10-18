@@ -132,3 +132,6 @@ dmypy.json
 
 # ELK
 logstash.db
+
+# DB
+db/
