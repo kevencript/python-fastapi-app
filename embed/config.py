@@ -21,17 +21,26 @@ class Settings(BaseSettings):
     instance of Settings
 
     """
-
+    # Env Configs
     environment: str = os.getenv("ENVIRONMENT", "local")
     testing: str = os.getenv("TESTING", "0")
     up: str = os.getenv("UP", "up")
     down: str = os.getenv("DOWN", "down")
     web_server: str = os.getenv("WEB_SERVER", "web_server")
 
+    # MongoDB Configs
     db_url: str = os.getenv("MONGO_URL", "")
     db_name: str = os.getenv("MONGO_DB", "")
     collection: str = os.getenv("MONGO_COLLECTION", "")
     test_db_name: str = os.getenv("MONGO_TEST_DB", "")
+
+    # JWT Authentication Configs
+    JWT_PUBLIC_KEY: str = os.getenv("JWT_PUBLIC_KEY", "")
+    JWT_PRIVATE_KEY: str = os.getenv("JWT_PRIVATE_KEY", "")
+    REFRESH_TOKEN_EXPIRES_IN: int = os.getenv("REFRESH_TOKEN_EXPIRES_IN", "")
+    ACCESS_TOKEN_EXPIRES_IN: int = os.getenv("ACCESS_TOKEN_EXPIRES_IN", "")
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "")
+    CLIENT_ORIGIN: str = os.getenv("CLIENT_ORIGIN", "")
 
 
 @lru_cache
