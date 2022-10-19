@@ -9,8 +9,7 @@ from embed.routers.exceptions import NotFoundHTTPException
 from embed.services.repository import create_user_db, mail_exists
 from embed.serializers.userSerializers import userResponseEntity, userEntity
 from embed.schemas.users import LoginUserSchema,CreateUserSchema, UserResponse
-from embed.schemas.oauth2 import AuthJWT
-from embed.schemas import oauth2
+from embed.schemas.oauth2 import AuthJWT, require_user
 
 global_settings = config.get_settings()
 collection = global_settings.collection
@@ -61,7 +60,7 @@ async def create_user(payload: CreateUserSchema):
         raise NotFoundHTTPException(msg=str(exception))
 
 
-@router.post('/login')
+@router.post('/login', status_code=status.HTTP_200_OK)
 async def login(payload: LoginUserSchema, response: Response, Authorize: AuthJWT = Depends()):
     """
 
@@ -78,7 +77,6 @@ async def login(payload: LoginUserSchema, response: Response, Authorize: AuthJWT
 
         # Check if the user exist
         user = userEntity(notSerializedUser)
-        
 
         # Check if the password is valid
         if not verify_password(payload.password, user['password']):
@@ -106,7 +104,7 @@ async def login(payload: LoginUserSchema, response: Response, Authorize: AuthJWT
         raise NotFoundHTTPException(msg=str(exception))
 
 @router.get('/logout', status_code=status.HTTP_200_OK)
-async def logout(response: Response, Authorize: AuthJWT = Depends()):
+async def logout(response: Response, Authorize: AuthJWT = Depends(require_user)):
     Authorize.unset_jwt_cookies()
     response.set_cookie('logged_in', '', -1)
 

@@ -1,7 +1,13 @@
 import base64
 from typing import List
+from fastapi import Depends, HTTPException, status
 from fastapi_jwt_auth import AuthJWT
 from pydantic import BaseModel
+from bson.objectid import ObjectId
+
+from embed.serializers.userSerializers import userEntity
+from embed.services.repository import mail_exists
+
 
 from embed import config
 
@@ -24,4 +30,38 @@ class SettingsAuth(BaseModel):
 @AuthJWT.load_config
 def get_config():
     return SettingsAuth()
+
+class NotVerified(Exception):
+    pass
+
+
+class UserNotFound(Exception):
+    pass    
+
+
+async def require_user(Authorize: AuthJWT = Depends()):
+    try:
+        Authorize.jwt_required()
+        user_id = Authorize.get_jwt_subject()
+        notSerializedUser = await mail_exists(ObjectId(str(user_id)), global_settings.collection)
+        user = userEntity(notSerializedUser)
+
+        if not user:
+            raise UserNotFound('User no longer exist')
+
+    except Exception as e:
+        error = e.__class__.__name__
+        print(error)
+        if error == 'MissingTokenError':
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail='You are not logged in')
+        if error == 'UserNotFound':
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail='User no longer exist')
+        if error == 'NotVerified':
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail='Please verify your account')
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail='Token is invalid or has expired')
+    return user_id
 
