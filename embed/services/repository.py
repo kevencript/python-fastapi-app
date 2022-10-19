@@ -3,7 +3,7 @@ from bson import ObjectId
 from pymongo.errors import WriteError
 
 import embed.main as embed
-from embed.routers.exceptions import AlreadyExistsHTTPException, BadRequestHTTPException
+from embed.routers.exceptions import AlreadyExistsHTTPException, NotFoundHTTPException
 
 async def retrieve_document(document_id: str, collection: str) -> dict:
     """
@@ -42,7 +42,7 @@ async def create_user_db(document: dict, collection: str) -> dict:
         document = await embed.app.state.mongo_collection[collection].insert_one(document)
         return await retrieve_document(document.inserted_id, collection)
     except WriteError:
-        raise BadRequestHTTPException("Error while creating the user")
+        raise NotFoundHTTPException("Error while creating the user")
 
 
 async def create_document(document: dict, collection: str) -> dict:

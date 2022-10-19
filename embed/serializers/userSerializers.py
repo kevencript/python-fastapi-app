@@ -2,7 +2,6 @@ def userEntity(user) -> dict:
     return {
         "id": str(user["_id"]),
         "email": user["email"],
-        "verified": user["verified"],
         "password": user["password"],
         "created_at": user["created_at"],
 

@@ -3,9 +3,12 @@ from typing import List
 from fastapi_jwt_auth import AuthJWT
 from pydantic import BaseModel
 
+from embed import config
+
+
 global_settings = config.get_settings()
 
-class Settings(BaseModel):
+class SettingsAuth(BaseModel):
     authjwt_algorithm: str = global_settings.JWT_ALGORITHM
     authjwt_decode_algorithms: List[str] = [global_settings.JWT_ALGORITHM]
     authjwt_token_location: set = {'cookies', 'headers'}
@@ -20,5 +23,5 @@ class Settings(BaseModel):
 
 @AuthJWT.load_config
 def get_config():
-    return Settings()
+    return SettingsAuth()
 
