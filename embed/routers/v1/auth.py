@@ -93,10 +93,11 @@ async def login(payload: LoginUserSchema, Authorize: AuthJWT = Depends()):
        
         # Send both access
         return {'status': 'success', 'access_token': access_token}
+        
     except ValueError as exception:
         raise NotFoundHTTPException(msg=str(exception))
 
 @router.get('/profile', status_code=status.HTTP_200_OK)
-async def protected(user_id: dict = Depends(require_user)):
+async def protected(user_id: str = Depends(require_user)):
     userAccount = await retrieve_document(document_id=user_id, collection=collection)
     return userResponseEntity(userAccount)
