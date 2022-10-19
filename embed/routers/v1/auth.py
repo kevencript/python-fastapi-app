@@ -10,6 +10,7 @@ from embed.services.repository import create_user_db, mail_exists
 from embed.serializers.userSerializers import userResponseEntity, userEntity
 from embed.schemas.users import LoginUserSchema,CreateUserSchema, UserResponse
 from embed.schemas.oauth2 import AuthJWT
+from embed.schemas import oauth2
 
 global_settings = config.get_settings()
 collection = global_settings.collection
@@ -62,6 +63,13 @@ async def create_user(payload: CreateUserSchema):
 
 @router.post('/login')
 async def login(payload: LoginUserSchema, response: Response, Authorize: AuthJWT = Depends()):
+    """
+
+    :param payload:
+    :param response:
+    :param Authorize:
+    :return:
+    """
     try:
 
         notSerializedUser = await mail_exists(payload.email.lower(), collection)
@@ -96,3 +104,10 @@ async def login(payload: LoginUserSchema, response: Response, Authorize: AuthJWT
         return {'status': 'success', 'access_token': access_token}
     except ValueError as exception:
         raise NotFoundHTTPException(msg=str(exception))
+
+@router.get('/logout', status_code=status.HTTP_200_OK)
+async def logout(response: Response, Authorize: AuthJWT = Depends()):
+    Authorize.unset_jwt_cookies()
+    response.set_cookie('logged_in', '', -1)
+
+    return {'status': 'success'}
