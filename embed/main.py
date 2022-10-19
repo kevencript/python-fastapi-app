@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from embed import config
 from embed.routers import router as v1
 from embed.services.repository import get_mongo_meta
@@ -11,6 +11,18 @@ if global_settings.environment == "local":
     get_logger("uvicorn")
 
 app = FastAPI()
+
+origins = [
+    global_settings.CLIENT_ORIGIN,
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(v1, prefix="/api/v1")
 
