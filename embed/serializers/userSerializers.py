@@ -13,7 +13,6 @@ def userResponseEntity(user) -> dict:
         "id": str(user["_id"]),
         "email": user["email"],
         "created_at": user["created_at"],
-
     }
 
 

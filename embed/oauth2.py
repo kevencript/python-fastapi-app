@@ -6,7 +6,8 @@ from pydantic import BaseModel
 from bson.objectid import ObjectId
 
 from embed.serializers.userSerializers import userEntity
-from embed.services.repository import mail_exists
+from embed.services.repository import mail_exists, retrieve_document
+from embed.utils import get_logger
 
 
 from embed import config
@@ -17,7 +18,7 @@ global_settings = config.get_settings()
 class SettingsAuth(BaseModel):
     authjwt_algorithm: str = global_settings.JWT_ALGORITHM
     authjwt_decode_algorithms: List[str] = [global_settings.JWT_ALGORITHM]
-    authjwt_token_location: set = {'cookies', 'headers'}
+    #authjwt_token_location: set = {'cookies', 'headers'}
     authjwt_access_cookie_key: str = 'access_token'
     authjwt_refresh_cookie_key: str = 'refresh_token'
     authjwt_cookie_csrf_protect: bool = False
@@ -43,7 +44,9 @@ async def require_user(Authorize: AuthJWT = Depends()):
     try:
         Authorize.jwt_required()
         user_id = Authorize.get_jwt_subject()
-        notSerializedUser = await mail_exists(ObjectId(str(user_id)), global_settings.collection)
+        
+        # Validating if user really exists
+        notSerializedUser = await retrieve_document(ObjectId(str(user_id)), global_settings.collection)
         user = userEntity(notSerializedUser)
 
         if not user:

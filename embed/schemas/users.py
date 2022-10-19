@@ -28,5 +28,6 @@ class UserResponseSchema(UserBaseSchema):
 
 class UserResponse(BaseModel):
     status: str
+    access_token: str
     user: UserResponseSchema
 
