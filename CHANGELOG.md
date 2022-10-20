@@ -20,6 +20,8 @@ straightforward as possible.
   Added the necessary structure to create security via Bearer Token (JWT). We can easily protect routes with the "user_id: str = Depends(require_user)" function requirement. We are using the "fastapi_jwt_auth" lib in order to help on token process. Also developed the Router Auth and its Routes: Register, Login and MyProfile
 - [Posts Module (Create, Search by String-match) #3](https://github.com/kevencript/embed-backend-devops/pull/3)
   Here we consolidate the API resilience to receive new modules with the Posts module. For now, we created the whole Schemas & Serializers for default response/request API patterns. This module basically means that the user can create a new post (following the specifications regarding max characters) and also search for his/her existing posts (we return a list of objects, in this case: posts). We are already using logging structures, so we have track of what is going on regarding our module.
+- [Monitoring Infrastructure (Prometheus, NodeExporter and Grafana) #3](https://github.com/kevencript/embed-backend-devops/pull/4)
+  To increase the monitoring/obervability and visualize important metrics such as CPU, Memory and others, we deployed some tools to first of all: help us to expose metrics from our nodes (node-exporter), this way, we can create an endpoint for it; Prometheus for itself, will scrap the exposed data by the exporter; Prometheus will be available as a Datasource into Grafana (this process is done automatically by the Docker-compose), this way we can apply the Node-Exporter Dashboard [1860](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) and have a nice UI for our metrics.
 
 ### Changed
 
