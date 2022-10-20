@@ -1,3 +1,4 @@
+from array import array
 from pydantic import BaseModel, Field, constr
 from bson.errors import InvalidId
 from bson import ObjectId
@@ -25,9 +26,11 @@ class CreatePostSchema(PostBaseSchema):
     title: constr(max_length=100)
     text: constr(max_length=1000)
 
+class SearchPersonalPostSchema(BaseModel):
+    string_match: constr(max_length=100)
+    
 class InsertDBPostSchema(PostBaseSchema):
     author_id: ObjectIdField = Field(...)
-
 
 class PostResponseSchema(PostBaseSchema):
     id: str
@@ -37,3 +40,10 @@ class PostResponseSchema(PostBaseSchema):
 class PostResponse(BaseModel):
     status: str
     post: PostResponseSchema
+
+class PostListResponse(BaseModel):
+    posts: list
+
+class PostListSchema(PostBaseSchema):
+    posts: list
+    
