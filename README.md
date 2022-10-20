@@ -91,7 +91,7 @@ docker-compose up --build
 2. Play with the routes:
 
 ![](https://i.ibb.co/RQH4xzr/Captura-de-Tela-2022-10-20-s-12-17-02.png)
-> We use Bearer Token for auth. We highly indicate to use Postman to test the routes
+> We use Bearer Token for auth. We highly indicate to use Postman to test the routes.
 
 
   ## Logging Tools Usage (API Logging > Logstash > ElasticSearch > Kibana)
