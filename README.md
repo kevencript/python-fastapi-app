@@ -33,13 +33,11 @@ Since that is a 50% Backend and 50% DevOps test, i applied my energy not only to
 │   │   └── v1
 │   │       ├── __init__.py
 │   │       ├── auth.py
-│   │       ├── posts.py
-│   │       └── vegs.py
+│   │       └── posts.py
 │   ├── schemas
 │   │   ├── __init__.py
 │   │   ├── posts.py
-│   │   ├── users.py
-│   │   └── vegs.py
+│   │   └── users.py
 │   ├── serializers
 │   │   ├── postsSerializers.py
 │   │   └── userSerializers.py
