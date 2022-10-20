@@ -1,5 +1,7 @@
-## [[Embed.xyz](https://embed.xyz) Assessment] - October 13, 2022 ~ Octocer 20, 2022.
+## [[Embed.xyz](https://embed.xyz) Assessment] - October 13, 2022 ~ Octocer 20, 2022
 This project is a pratical test for Embed.xyz. That's basically a Web app with any Python lib (we are currently using [FastAPI](https://fastapi.tiangolo.com)). in which i had some days to develop some module into it and create a nice way to build (docker-compose), logging (ELK) and monitoring (Prometheus, Kibana and Nodex-exporter), all of this in a organized and able to grow API strcuture. with security and data contol.
+
+Since that is a 50% Backend and 50% DevOps test, i applied my energy not only to have a nice and organized API, but have controll/visibility regarding what is happening on both App Logging and Infra Metrics. All of this is beeing deployed with a docker-compose, this means that we have almost zero effort to start the whole App and its auxililiar tools. Of course there is a bunch of improvement proposals, but due the short deadline, we can consider this project as a MVP with structure ready to receive new modules.
 
 ## Project Folder Structure
 ```
@@ -112,3 +114,5 @@ docker-compose up --build
 ![](https://i.ibb.co/dr5ZQh3/Captura-de-Tela-2022-10-20-s-12-47-32.png)
 > Here you have the graphics for our metrics
 
+  ## Conclusion
+ The original Embed.xyz assessment requires some other API modules: Subscriptions and spicific Posts searches. In my mind, since that this is a 50% Software and 50% DevOps, i decided to apply time creating the necessary structure to receive any other new module. For now, we have authentication module and a nice example. with Posts. This means that any other route will follow the pattern of what we already have into the API. By the other hand, we are not only allowd to create new modules but we have a structure to visualze our App logs (Errors, Action Tracking and more) and have control regarding our Infrastructure (CPU, Memory and more). All of this running just a command to start the whole environment.
