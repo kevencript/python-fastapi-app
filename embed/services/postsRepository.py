@@ -4,9 +4,6 @@ from pymongo.errors import WriteError
 import embed.main as embed
 from embed.routers.exceptions import AlreadyExistsHTTPException, NotFoundHTTPException
 from embed.schemas.posts import InsertDBPostSchema
-from embed.serializers.postsSerializers import postEntity
- 
-
 
 async def insert_post(document: InsertDBPostSchema, collection: str) -> dict:
     """
@@ -20,5 +17,5 @@ async def insert_post(document: InsertDBPostSchema, collection: str) -> dict:
         findOne =  await embed.app.state.mongo_collection[collection].find_one({"_id": document.inserted_id})
         return findOne
     except WriteError:
-        raise AlreadyExistsHTTPException(f"Document with {document.inserted_id=} already exists")
+        raise AlreadyExistsHTTPException(f"Error while trying to create Post")
 

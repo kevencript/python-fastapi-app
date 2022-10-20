@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 from embed import config
 
 from embed.utils import hash_password, verify_password
-from embed.routers.exceptions import NotFoundHTTPException
+from embed.routers.exceptions import NotFoundHTTPException, InternalServerErrorHTTPException
 from embed.services.repository import create_user_db, mail_exists, retrieve_document
 from embed.serializers.userSerializers import userResponseEntity, userEntity
 from embed.schemas.users import LoginUserSchema,CreateUserSchema, UserResponse
@@ -62,7 +62,7 @@ async def create_user(payload: CreateUserSchema, Authorize: AuthJWT = Depends())
        
         return {"status": "success", "access_token":access_token, "user": userToReturn}
     except ValueError as exception:
-        raise NotFoundHTTPException(msg=str(exception))
+        raise InternalServerErrorHTTPException(msg=str(exception))
 
 
 @router.post('/login', status_code=status.HTTP_200_OK, )

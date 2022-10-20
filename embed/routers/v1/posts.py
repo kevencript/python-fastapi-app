@@ -4,7 +4,7 @@ from fastapi import APIRouter, Response, status, Depends, HTTPException
 
 from embed import config
 
-from embed.routers.exceptions import NotFoundHTTPException
+from embed.routers.exceptions import InternalServerErrorHTTPException
 from embed.services.postsRepository import insert_post
 from embed.serializers.postsSerializers import postToCreate, postEntity
 from embed.schemas.posts import PostResponse, CreatePostSchema
@@ -35,10 +35,8 @@ async def create_post(payload: CreatePostSchema, user_id: str = Depends(require_
         }
         # Serializing and creating Post
         postSerialized = postToCreate(postToSerialize)
-        
         createdPost = await insert_post(postSerialized, collection)
-        
         return { 'status': "created", 'post': postEntity(createdPost)}
 
     except ValueError as exception:
-        raise NotFoundHTTPException(msg=str(exception))
+        raise InternalServerErrorHTTPException(msg=str(exception))

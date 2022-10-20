@@ -16,3 +16,10 @@ class AlreadyExistsHTTPException(HTTPException):
             detail=msg if msg else "Document with specified id already exists",
         )
 
+class InternalServerErrorHTTPException(HTTPException):
+    def __init__(self, msg: str):
+        super().__init__(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=msg if msg else "Internal Server Error",
+        )
+
